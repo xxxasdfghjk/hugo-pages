@@ -1,0 +1,16 @@
+baseURL = "http://xxxasdfghjk.github.io/"
+languageCode = "ja-jp"
+title = "xxxasdfghjk's blog"
+theme = 'github-style'
+
+
+[params]
+  author = "xxxasdfghjk"
+  avatar = "/images/avatar.jpg"
+  description = "Done is better than perfect"
+  github = "xxxasdfghjk"
+  twitter = "xxxasdfghjk"
+  email = "xxxasdfghjk999@gmail.com"
+  favicon = "/images/github.png"
+  location = "Japan"
+  userStatusEmoji = "👺"
