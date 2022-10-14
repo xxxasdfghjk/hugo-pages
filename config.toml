@@ -14,3 +14,16 @@ theme = 'github-style'
   favicon = "/images/github.png"
   location = "Japan"
   userStatusEmoji = "👺"
+  enableGitalk = true
+   [params.gitalk]
+    clientID = "a01378ceca3845e834d0" 
+    clientSecret = "35821df1b2b465c700c1f2a76f11ccc8ba30583f" 
+    repo = "pages-comment-store"
+    owner = "xxxasdfghjk"
+    admin = "xxxasdfghjk"
+    id = "location.pathname"
+    labels = "gitalk"
+    perPage = 30
+    pagerDirection = "last"
+    createIssueManually = true
+    distractionFreeMode = false
