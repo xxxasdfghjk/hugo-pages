@@ -127,8 +127,9 @@ type Length<T extends readonly any[]> = T["length"];
 `Exclude<T>`を実装する問題。
 
 #### 解答
+
 ```ts
-type MyExclude<T, U> = T extends U ? never : T
+type MyExclude<T, U> = T extends U ? never : T;
 ```
 
 #### メモ
@@ -136,9 +137,109 @@ type MyExclude<T, U> = T extends U ? never : T
 ユニオン型`T`を展開した上で評価するのがポイント。
 例えば`MyExclude<'a' | 'b' | 'c', 'a' | 'b'>`
 が評価されるときは
+
 ```ts
 'a' extends 'a' | 'b' ? never : 'a'
 | 'b' extends 'a' | 'b' ? never : 'b'
 | 'c' extends 'a' | 'b' ? never : 'c'
 ```
+
 と展開され、結果`'c'`になる
+
+### 189・Awaited
+
+[問題はこちら](https://github.com/type-challenges/type-challenges/blob/main/questions/00189-easy-awaited/README.md)
+
+`Promise<T>`を unwrap して`T`を取り出す`Awaited<U>`を実装する問題。
+
+#### 解答
+
+```ts
+type MyAwaited<T> = T extends { then: (onfulfiled: (arg: infer U) => any) => any } ? MyAwaited<U> : T;
+```
+
+#### メモ
+
+想定解がよくわからない。
+
+再帰的に`MyAwaited<U>`を適用し、`Promise<T>`にマッチしなくなったときの型を返す。
+
+※追記
+JavaScriptだとthenメソッドを持つオブジェクトはPromiseと判定されるらしい。TypeScriptでは、`PromiseLike<T>`なる型でそれを表現できる。それを使って答えると次のようになる。
+
+```ts
+type MyAwaited<T> = T extends PromiseLike<infer U> ? MyAwaited<U> : T
+```
+
+### 268・If
+
+[問題はこちら](https://github.com/type-challenges/type-challenges/blob/main/questions/00268-easy-if/README.md)
+
+`If<C,T,F>` を実装する。
+`C`は`true|false`リテラル型であり、`true`のとき`T`、`false`のとき`F`型を返す。
+
+#### 解答
+
+```ts
+type If<C extends true|false, T, F> = C extends true ? T : F
+```
+
+#### メモ
+特になし
+
+### 533・Concat
+[問題はこちら](https://github.com/type-challenges/type-challenges/blob/main/questions/00533-easy-concat/README.md)
+
+2つのタプルをとり、連結した1つのタプルを返す `Concat<T1,T2>`を実装する。
+
+#### 解答
+```ts
+type Concat<T extends readonly any[], U extends readonly any[]> = [...T,...U]
+```
+
+#### メモ
+型の文脈でもspread構文は存在するらしい。
+
+### 898・includes
+[問題はこちら](https://github.com/type-challenges/type-challenges/blob/main/questions/00898-easy-includes/README.md)
+
+タプルに特定の型が存在するか判定する`Includes<T,U>`を実装する。
+
+#### 解答
+```ts
+type Includes<T extends readonly any[], U> =  T extends [infer V , ...infer Rest] ? (Equal<V,U> extends true ? true : Includes<Rest,U>) : false
+
+```
+
+#### メモ
+
+`Equal<T,U>`を使うのは盲点。それがわかれば再帰で実装するのみ。
+
+### 3057・Push
+
+[問題はこちら](https://github.com/type-challenges/type-challenges/blob/main/questions/03057-easy-push/README.md)
+
+タプルに型を1つ追加する`Push<T,U>`を実装する。
+
+#### 解答
+```ts
+type Push<T extends readonly any[], U> = [...T, ...[U]]
+```
+
+#### メモ
+特になし。
+
+### 3312・Parameters
+
+[問題はこちら](https://github.com/type-challenges/type-challenges/blob/main/questions/03312-easy-parameters/README.md)
+
+関数を受け取り引数のタプルを返す`Parameters<F>`を実装する。
+
+#### 解答
+```ts
+type MyParameters<T extends (...args: any[]) => any> = T extends (...args: infer U) => any ? U : never
+```
+
+#### メモ
+引数をスプレッド構文で引き受ける典型。
+
